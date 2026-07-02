@@ -1,0 +1,73 @@
+# ======================================
+# Python 通用忽略
+# ======================================
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# 虚拟环境
+.venv/
+virtualenv/
+
+# 打包构建
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# 日志
+*.log
+logs/
+log/
+
+# 数据库
+*.db
+*.sqlite3
+*.sql
+
+# 环境变量（绝对不能提交）
+.env
+.env.*
+!.env.example
+!.env.production.example
+.env.prod
+.env.dev
+
+# 编辑器 / IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# 测试
+htmlcov/
+.coverage
+.pytest_cache/
+.tox/
+.nox/
+
+# 临时文件
+tmp/
+temp/
+*.tmp
+*.temp
+
