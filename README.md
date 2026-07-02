@@ -25,4 +25,21 @@ pip config set global.index-url https://mirrors.cloud.tencent.com/pypi/simple/
 
 # 查询验证
 pip config list
+
+# 查看用到的包
+pip freeze
+
+# 查看用到的包输入到文件（不建议）
+pip freeze > requirements.txt
+
+## 建议使用 https://pypi.org/project/pipreqs/
+pip install --no-deps pipreqs
+pip install yarg==0.1.9 docopt==0.6.2
+
+# 依赖导入到requirements.txt
+pipreqs --ignore venv --force
+pipreqs --ignore venv --force --encoding=utf-8
+
+# 根据requirements.txt安装依赖
+pip install -r requirements.txt
 ```
