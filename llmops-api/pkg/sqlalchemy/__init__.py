@@ -1,11 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-@Time    : 2026/7/2 23:50
+@Time    : 2026/7/3 19:01
 @Author  : borgesme@gmail.com
 @File    : __init__.py.py
 """
+from .sqlalchemy import SQLAlchemy
 
-from app.http.app import app
-
-__all__ = ["app"]
+__all__ = ["SQLAlchemy"]

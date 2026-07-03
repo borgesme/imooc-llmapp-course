@@ -5,5 +5,4 @@ injector==0.24.0
 openai==2.44.0
 pytest==9.1.1
 python-dotenv==1.2.2
-SQLAlchemy==2.0.51
 WTForms==3.2.2
