@@ -9,6 +9,7 @@ import os
 
 from openai import OpenAI
 
+from pkg.response import success_json, validate_error_json
 from schema.app_schema import CompletionReq
 
 
@@ -20,7 +21,7 @@ class AppHandler:
         # 1.提取从接口中获取的输入，POST
         req = CompletionReq()
         if not req.validate():
-            return req.errors
+            return validate_error_json(req.errors)
 
         # 2.构建OpenAI客户端，并发起请求
         base_url = os.getenv("OPENAI_API_BASE_URL")
@@ -47,7 +48,7 @@ class AppHandler:
 
         content = completion.choices[0].message.content
 
-        return content
+        return success_json({"content": content})
 
     def ping(self):
         return {"ping": "pong"}
