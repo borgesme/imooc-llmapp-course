@@ -6,16 +6,27 @@
 @File    : app_handler.py
 """
 import os
+from dataclasses import dataclass
 
+from injector import inject
 from openai import OpenAI
 
 from internal.exception import FailException
-from pkg.response import success_json, validate_error_json
 from internal.schema.app_schema import CompletionReq
+from internal.service import AppService
+from pkg.response import success_json, validate_error_json, success_message
 
 
+@inject
+@dataclass
 class AppHandler:
     """应用控制器"""
+    app_service: AppService
+
+    def create_app(self):
+        """调用服务创建新的APP记录"""
+        app = self.app_service.create_app()
+        return success_message(f"应用已经成功创建，id为{app.id}")
 
     def completion(self):
         """聊天接口"""
