@@ -6,6 +6,7 @@
 @File    : app_handler.py
 """
 import os
+import uuid
 from dataclasses import dataclass
 
 from injector import inject
@@ -27,6 +28,18 @@ class AppHandler:
         """调用服务创建新的APP记录"""
         app = self.app_service.create_app()
         return success_message(f"应用已经成功创建，id为{app.id}")
+
+    def get_app(self, id: uuid.UUID):
+        app = self.app_service.get_app(id)
+        return success_message(f"应用已经成功获取，名字是{app.name}")
+
+    def update_app(self, id: uuid.UUID):
+        app = self.app_service.update_app(id)
+        return success_message(f"应用已经成功修改，修改的名字是:{app.name}")
+
+    def delete_app(self, id: uuid.UUID):
+        app = self.app_service.delete_app(id)
+        return success_message(f"应用已经成功删除，id为:{app.id}")
 
     def completion(self):
         """聊天接口"""

@@ -28,3 +28,19 @@ class AppService:
         # 3.提交session会话
         self.db.session.commit()
         return app
+
+    def get_app(self, id: uuid.UUID) -> App:
+        app = self.db.session.query(App).get(id)
+        return app
+
+    def update_app(self, id: uuid.UUID) -> App:
+        app = self.get_app(id)
+        app.name = "慕课聊天机器人"
+        self.db.session.commit()
+        return app
+
+    def delete_app(self, id: uuid.UUID) -> App:
+        app = self.get_app(id)
+        self.db.session.delete(app)
+        self.db.session.commit()
+        return app
