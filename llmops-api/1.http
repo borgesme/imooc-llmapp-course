@@ -1,0 +1,11 @@
+# http://127.0.0.1:5000/app/completion Post http://127.0.0.1:5000/app/completion
+
+
+
+
+POST http://127.0.0.1:5000/app/completion
+Content-Type: application/json
+
+{
+  "prompt": "测试输入内容"
+}
