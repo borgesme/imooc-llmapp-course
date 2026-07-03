@@ -7,8 +7,9 @@
 """
 import os
 
-from flask import request
 from openai import OpenAI
+
+from schema.app_schema import CompletionReq
 
 
 class AppHandler:
@@ -17,25 +18,30 @@ class AppHandler:
     def completion(self):
         """聊天接口"""
         # 1.提取从接口中获取的输入，POST
-        query = request.json.get("query")
+        req = CompletionReq()
+        if not req.validate():
+            return req.errors
 
         # 2.构建OpenAI客户端，并发起请求
+        base_url = os.getenv("OPENAI_API_BASE_URL")
+        base_key = os.getenv("OPENAI_API_BASE_KEY")
+        base_model = os.getenv("OPENAI_API_BASE_MODEL")
+
         client = OpenAI(
-            base_url="https://api.minimaxi.com/v1",
-            api_key="sk-api-1QeY3w4fiZs8vf4420OUkuvh3rTFowsoCH1UfJHpxOjAm4a7OVOK1coDkYfo8voBU4jVh22DshndgYOuUj2Pp5fXp7PQIRAZLjJE94avgJt_AMjktIjn",
-            # base_url=os.getenv("OPENAI_BASE_URL"),
-            # api_key=os.getenv("OPENAI_API_KEY"),
+            base_url=base_url,
+            api_key=base_key,
         )
 
-        print('111', os.getenv("OPENAI_BASE_URL"))
-        print('222', os.getenv("OPENAI_API_KEY"))
+        print('111_api_url', base_url)
+        print('222_api_key', base_key)
+        print('333_api_model', base_model)
 
         # 3.得到请求响应，然后将OpenAI的响应传递给前端
         completion = client.chat.completions.create(
-            model="MiniMax-M3",
+            model=base_model,
             messages=[
                 {"role": "system", "content": "你是OpenAI开发的聊天机器人，请根据用户的输入回复对应的信息"},
-                {"role": "user", "content": query},
+                {"role": "user", "content": req.query.data},
             ]
         )
 
