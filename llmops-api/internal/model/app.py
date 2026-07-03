@@ -8,6 +8,7 @@
 import uuid
 from datetime import datetime
 
+from internal.extension.database_extension import db
 from sqlalchemy import (
     Column,
     UUID,
@@ -17,8 +18,6 @@ from sqlalchemy import (
     PrimaryKeyConstraint,
     Index,
 )
-
-from internal.extension.database_extension import db
 
 
 class App(db.Model):

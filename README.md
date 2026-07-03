@@ -43,3 +43,24 @@ pipreqs --ignore venv --force --encoding=utf-8
 # 根据requirements.txt安装依赖
 pip install -r requirements.txt
 ```
+
+## 数据库同步
+
+```bash
+# LLMOps项目运行命令
+flask --app app.http.app db init
+
+# 自动生成迁移脚本
+flask --app app.http.app db migrate -m "create_table"
+
+# 更新及回滚数据库
+flask --app app.http.app db upgrade
+flask --app app.http.app db downgrade
+
+# 回退到最初的版本
+flask --app app.http.app db downgrade base
+
+
+# 回滚到特定的版本，可以在 downgrade 后带上特定的版本号，如下：
+flask --app app.server.app db downgrade 版本号
+```
