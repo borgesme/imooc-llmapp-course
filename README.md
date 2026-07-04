@@ -64,3 +64,14 @@ flask --app app.http.app db downgrade base
 # 回滚到特定的版本，可以在 downgrade 后带上特定的版本号，如下：
 flask --app app.server.app db downgrade 版本号
 ```
+
+## 安装 langchain
+
+```bash
+# pip uninstall langchain langchain-community -y
+# 安装课程版本
+# pip install langchain==0.2.1 langchain-community==0.2.1
+
+# llmops-api\study\1-Prompt组件及使用技巧\4.复用提示模板.py
+# 最新版本移除了 PipelinePromptTemplate
+```
