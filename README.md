@@ -2,6 +2,12 @@
 
 [慕课网 | AI Agent 全栈开发工程师](https://class.imooc.com/llmappdev)
 
+## 文档
+
+> [langchain](https://reference.langchain.com/python/langchain/overview)
+>
+> [LangSmith platform](https://smith.langchain.com)
+
 ## python 虚拟环境
 
 ```bash
