@@ -10,7 +10,9 @@ import uuid
 from dataclasses import dataclass
 
 from injector import inject
-from openai import OpenAI
+from langchain_core.output_parsers import StrOutputParser
+from langchain_core.prompts import ChatPromptTemplate
+from langchain_openai import ChatOpenAI
 
 from internal.exception import FailException
 from internal.schema.app_schema import CompletionReq
@@ -48,30 +50,22 @@ class AppHandler:
         if not req.validate():
             return validate_error_json(req.errors)
 
+        prompt = ChatPromptTemplate.from_template("{query}")
+
         # 2.构建OpenAI客户端，并发起请求
         base_url = os.getenv("OPENAI_API_BASE_URL")
         base_key = os.getenv("OPENAI_API_BASE_KEY")
         base_model = os.getenv("OPENAI_API_BASE_MODEL")
 
-        client = OpenAI(
-            base_url=base_url,
-            api_key=base_key,
-        )
-
-        print('111_api_url', base_url)
-        print('222_api_key', base_key)
-        print('333_api_model', base_model)
+        llm = ChatOpenAI(model=base_model, base_url=base_url, api_key=base_key)
 
         # 3.得到请求响应，然后将OpenAI的响应传递给前端
-        completion = client.chat.completions.create(
-            model=base_model,
-            messages=[
-                {"role": "system", "content": "你是OpenAI开发的聊天机器人，请根据用户的输入回复对应的信息"},
-                {"role": "user", "content": req.query.data},
-            ]
-        )
+        ai_message = llm.invoke(prompt.invoke(req.query.data))
 
-        content = completion.choices[0].message.content
+        parser = StrOutputParser()
+
+        # 4.解析响应内容
+        content = parser.invoke(ai_message)
 
         return success_json({"content": content})
 
