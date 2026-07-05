@@ -7,6 +7,8 @@
 > [langchain](https://reference.langchain.com/python/langchain/overview)
 >
 > [LangSmith platform](https://smith.langchain.com)
+>
+> [LLMOps AI应用开发平台UI设计稿](https://js.design/f/I_B1Is?p=H6nW02nJkv&mode=design)
 
 ## python 虚拟环境
 
