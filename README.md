@@ -8,7 +8,9 @@
 >
 > [LangSmith platform](https://smith.langchain.com)
 >
-> [LLMOps AI应用开发平台UI设计稿](https://js.design/f/I_B1Is?p=H6nW02nJkv&mode=design)
+> [LLMOps AI 应用开发平台 UI 设计稿](https://js.design/f/I_B1Is?p=H6nW02nJkv&mode=design)
+>
+> [BEJSON 转译](https://www.bejson.com/json/format/)
 
 ## python 虚拟环境
 
