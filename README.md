@@ -11,6 +11,10 @@
 > [LLMOps AI 应用开发平台 UI 设计稿](https://js.design/f/I_B1Is?p=H6nW02nJkv&mode=design)
 >
 > [BEJSON 转译](https://www.bejson.com/json/format/)
+>
+> [MetaGPT 官网](https://docs.deepwisdom.ai/main/zh/)
+>
+> [MetaGPT Github 仓库](https://github.com/geekan/MetaGPT)
 
 ## python 虚拟环境
 
