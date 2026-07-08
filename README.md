@@ -15,6 +15,8 @@
 > [MetaGPT 官网](https://docs.deepwisdom.ai/main/zh/)
 >
 > [MetaGPT Github 仓库](https://github.com/geekan/MetaGPT)
+>
+> [https://imooc-langchain.shortvar.com](https://imooc-langchain.shortvar.com/docs/how_to/)
 
 ## python 虚拟环境
 
