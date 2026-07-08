@@ -70,4 +70,4 @@ tmp/
 temp/
 *.tmp
 *.temp
-
+**/embeddings/

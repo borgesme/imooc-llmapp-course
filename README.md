@@ -17,6 +17,8 @@
 > [MetaGPT Github 仓库](https://github.com/geekan/MetaGPT)
 >
 > [https://imooc-langchain.shortvar.com](https://imooc-langchain.shortvar.com/docs/how_to/)
+>
+> [Hugging Face](https://huggingface.co/)
 
 ## python 虚拟环境
 
