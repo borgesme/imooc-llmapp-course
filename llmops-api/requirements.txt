@@ -15,7 +15,7 @@ langchain_pinecone==0.2.13
 langchain_text_splitters==1.1.2
 langchain_weaviate==0.0.7
 numpy==2.5.1
-openai==2.44.0
+openai==2.45.0
 pydantic==2.13.4
 pytest==9.1.1
 python-dotenv==1.2.2
