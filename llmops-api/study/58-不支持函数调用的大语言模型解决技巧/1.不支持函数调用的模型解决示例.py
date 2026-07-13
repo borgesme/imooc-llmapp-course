@@ -1,22 +1,22 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-@Time    : 2026/7/13 17:40
+@Time    : 2026/7/13 19:38
 @Author  : borgesme@gmail.com
-@File    : 1.GPT模型绑定函数.py
+@File    : 1.不支持函数调用的模型解决示例.py
 """
 import json
 import os
-from typing import Type, Any
+from typing import Type, Any, TypedDict, Dict, Optional
 
 import dotenv
 import requests
 from langchain_community.tools import Tool
 from langchain_community.utilities import GoogleSerperAPIWrapper
-from langchain_core.messages import ToolMessage
+from langchain_core.output_parsers import JsonOutputParser
 from langchain_core.prompts import ChatPromptTemplate
-from langchain_core.runnables import RunnablePassthrough
-from langchain_core.tools import BaseTool
+from langchain_core.runnables import RunnableConfig, RunnablePassthrough
+from langchain_core.tools import BaseTool, render_text_description_and_args
 from langchain_openai import ChatOpenAI
 from pydantic import Field, BaseModel
 
@@ -83,6 +83,11 @@ class GaodeWeatherTool(BaseTool):
             return f"获取{kwargs.get('city')}天气预报信息失败"
 
 
+class ToolCallRequest(TypedDict):
+    name: str
+    arguments: Dict[str, Any]
+
+
 search_wrapper = GoogleSerperAPIWrapper()
 # 1.定义工具列表
 gaode_weather = GaodeWeatherTool()
@@ -102,45 +107,43 @@ tool_dict = {
 }
 tools = [tool for tool in tool_dict.values()]
 
-# 2.创建Prompt
+
+def invoke_tool(
+        tool_call_request: ToolCallRequest, config: Optional[RunnableConfig] = None,
+) -> str:
+    """
+    我们可以使用的执行工具调用的函数。
+
+    :param tool_call_request: 一个包含键名和参数的字典，名称必须与现有的工具名称匹配，参数是该工具的参数。
+    :param config: 这是LangChain中包含回调、元数据等信息的配置信息。
+    :return: 工具执行的结果。
+    """
+    name = tool_call_request["name"]
+    requested_tool = tool_dict.get(name)
+    return requested_tool.invoke(tool_call_request.get("arguments"), config=config)
+
+
+system_prompt = """你是一个由OpenAI开发的聊天机器人，可以访问以下工具。
+以下是每个工具的名称和描述：
+
+{rendered_tools}
+
+根据用户输入，返回要使用的工具的名称和输入。
+将您的响应作为具有`name`和`arguments`键的JSON块返回。
+`arguments`应该是一个字典，其中键对应于参数名称，值对应于请求的值。"""
+
 prompt = ChatPromptTemplate.from_messages([
-    (
-        "system",
-        "你是由OpenAI开发的聊天机器人，可以帮助用户回答问题，必要时刻请调用工具帮助用户解答，如果问题需要多个工具回答，请一次性调用所有工具，不要分步调用"
-    ),
+    ("system", system_prompt),
     ("human", "{query}"),
-])
+]).partial(rendered_tools=render_text_description_and_args(tools))
 
-# 3.创建大语言模型并绑定工具
-llm = ChatOpenAI(model=base_model, base_url=base_url, api_key=base_key)
-llm_with_tool = llm.bind_tools(tools=tools)
+llm = ChatOpenAI(model=base_model, base_url=base_url, api_key=base_key, temperature=0)
 
-# 4.创建链应用
-chain = {"query": RunnablePassthrough()} | prompt | llm_with_tool
+chain = (
+        {"query": RunnablePassthrough()}
+        | prompt
+        | llm
+        | JsonOutputParser()
+        | RunnablePassthrough.assign(output=invoke_tool))
 
-# 5.调用链应用，并获取输出响应
-query = "上海现在天气怎样，并且请用谷歌搜索工具查询一下2024年巴黎奥运会中国代表团共获得几枚金牌？"
-resp = chain.invoke(query)
-print(resp)
-tool_calls = resp.tool_calls
-
-# 6.判断是工具调用还是正常输出结果
-if len(tool_calls) <= 0:
-    print("生成内容: ", resp.content)
-else:
-    # 7.将历史的系统消息、人类消息、AI消息组合
-    messages = prompt.invoke(query).to_messages()
-    messages.append(resp)
-
-    # 8.循环遍历所有工具调用信息
-    for tool_call in tool_calls:
-        tool = tool_dict.get(tool_call.get("name"))  # 获取需要执行的工具
-        print("正在执行工具: ", tool.name)
-        content = tool.invoke(tool_call.get("args"))  # 工具执行的内容/结果
-        print("工具返回结果: ", content)
-        tool_call_id = tool_call.get("id")
-        messages.append(ToolMessage(
-            content=content,
-            tool_call_id=tool_call_id,
-        ))
-    print("输出内容: ", llm.invoke(messages).content)
+print(chain.invoke({"query": "马拉松的世界记录是多少？"}))
