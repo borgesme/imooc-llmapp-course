@@ -23,6 +23,7 @@ messages = [
     AIMessage([
         {"type": "text", "text": "你好，慕小课！我对很多话题感兴趣，比如探索新知识和帮助解决问题。你最喜欢游泳还是篮球呢？"},
         {
+
             "type": "text",
             "text": "你好，慕小课！我喜欢探讨各种话题和帮助解答问题。你对游泳和篮球的兴趣很广泛，有没有特别喜欢的运动方式或运动员呢？"
         },
@@ -35,10 +36,15 @@ messages = [
 
 llm = ChatOpenAI(model=base_model, base_url=base_url, api_key=base_key)
 
+# 1. 额外创建一个只用来计算 Token 的 ChatOpenAI 实例（指定一个标准的、支持 tiktoken 的模型，比如 gpt-4o）
+# 放心，这只是在本地用 tiktoken 库计算，不会产生网络请求和 API 费用
+counter_llm = ChatOpenAI(model="gpt-4o")
+
 update_messages = trim_messages(
     messages,
     max_tokens=80,
-    token_counter=llm,
+    # token_counter=llm,
+    token_counter=counter_llm,  # <-- 使用 counter_llm 来替代 llm
     strategy="first",
     end_on="human",
     allow_partial=False,

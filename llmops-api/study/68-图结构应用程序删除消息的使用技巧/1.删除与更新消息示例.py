@@ -51,6 +51,10 @@ graph_builder.add_node("update_ai_message", update_ai_message)
 # 3.添加边
 graph_builder.set_entry_point("chatbot")
 graph_builder.add_edge("chatbot", "delete_human_message")
+
+# 测试删除消息
+# graph_builder.set_finish_point("delete_human_message")
+
 graph_builder.add_edge("delete_human_message", "update_ai_message")
 graph_builder.set_finish_point("update_ai_message")
 
