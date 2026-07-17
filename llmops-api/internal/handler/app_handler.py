@@ -27,10 +27,10 @@ from langchain_core.runnables import RunnablePassthrough, RunnableLambda, Runnab
 from langchain_core.tracers import Run
 from langchain_openai import ChatOpenAI
 
-from internal.exception import FailException
 from internal.schema.app_schema import CompletionReq
 from internal.service import AppService
 from pkg.response import success_json, validate_error_json, success_message
+from internal.core.tools.builtin_tools.providers import ProviderFactory
 
 
 @inject
@@ -38,6 +38,7 @@ from pkg.response import success_json, validate_error_json, success_message
 class AppHandler:
     """应用控制器"""
     app_service: AppService
+    provider_factory: ProviderFactory
 
     def create_app(self):
         """调用服务创建新的APP记录"""
@@ -116,5 +117,10 @@ class AppHandler:
         return success_json({"content": content})
 
     def ping(self):
-        raise FailException("数据未找到")
+        google_serper = self.provider_factory.get_tool('google', 'google_serper')
+        print(google_serper)
+
+        print(google_serper().invoke("2024年北京半程马拉松的前三名是谁?"))
+        return success_json()
+        # raise FailException("数据未找到")
         # return {"ping": "pong"}
