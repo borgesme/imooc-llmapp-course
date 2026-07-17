@@ -117,9 +117,8 @@ class AppHandler:
         return success_json({"content": content})
 
     def ping(self):
-        google = self.provider_factory.get_provider("google")
-        google_serper_entity = google.get_tool_entity("google_serper")
-        print(google_serper_entity)
-        return success_json()
+        provider_entities = self.provider_factory.get_provider_entities()
+
+        return success_json({"providers": [provider.dict() for provider in provider_entities]})
         # raise FailException("数据未找到")
         # return {"ping": "pong"}

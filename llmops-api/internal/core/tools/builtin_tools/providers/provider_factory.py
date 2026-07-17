@@ -10,7 +10,7 @@ from typing import Any
 
 import yaml
 from injector import inject, singleton
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 from internal.core.tools.builtin_tools.entities import ProviderEntity, Provider
 
@@ -19,7 +19,7 @@ from internal.core.tools.builtin_tools.entities import ProviderEntity, Provider
 @singleton
 class ProviderFactory(BaseModel):
     """服务提供商工厂类"""
-    provider_map: dict[str, Provider] = {}
+    provider_map: dict[str, Provider] = Field(default_factory=dict)
 
     def __init__(self, **kwargs):
         """构造函数，初始化对应的provider_tool_map"""
