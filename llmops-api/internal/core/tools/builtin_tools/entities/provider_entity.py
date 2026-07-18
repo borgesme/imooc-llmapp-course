@@ -39,9 +39,6 @@ class Provider(BaseModel):
         super().__init__(**kwargs)
         self._provider_init()
 
-    class Config:
-        protected_namespaces = ()
-
     def get_tool(self, tool_name: str) -> Any:
         """根据工具的名字，来获取到该服务提供商下的指定工具"""
         return self.tool_func_map.get(tool_name)

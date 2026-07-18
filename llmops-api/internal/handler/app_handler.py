@@ -30,7 +30,6 @@ from langchain_openai import ChatOpenAI
 from internal.schema.app_schema import CompletionReq
 from internal.service import AppService
 from pkg.response import success_json, validate_error_json, success_message
-from internal.core.tools.builtin_tools.providers import ProviderFactory
 
 
 @inject
@@ -38,7 +37,6 @@ from internal.core.tools.builtin_tools.providers import ProviderFactory
 class AppHandler:
     """应用控制器"""
     app_service: AppService
-    provider_factory: ProviderFactory
 
     def create_app(self):
         """调用服务创建新的APP记录"""
@@ -83,8 +81,9 @@ class AppHandler:
             return validate_error_json(req.errors)
 
         # 2. 创建 prompt 与记忆
+        system_prompt = "你是一个强大的聊天机器人，能根据用户的提问回复对应的问题"
         prompt = ChatPromptTemplate.from_messages([
-            ("system", "你是一个强大的聊天机器人，能根据用户的提问回复对应的问题"),
+            ("system", system_prompt),
             MessagesPlaceholder("history"),
             ("human", "{query}"),
         ])
@@ -117,8 +116,6 @@ class AppHandler:
         return success_json({"content": content})
 
     def ping(self):
-        provider_entities = self.provider_factory.get_provider_entities()
-
-        return success_json({"providers": [provider.dict() for provider in provider_entities]})
+        return success_json()
         # raise FailException("数据未找到")
         # return {"ping": "pong"}

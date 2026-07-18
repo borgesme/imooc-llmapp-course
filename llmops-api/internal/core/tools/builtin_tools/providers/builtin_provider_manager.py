@@ -3,7 +3,7 @@
 """
 @Time    : 2026/7/17 17:30
 @Author  : borgesme@gmail.com
-@File    : provider_factory.py
+@File    : builtin_provider_manager.py
 """
 import os.path
 from typing import Any
@@ -17,7 +17,7 @@ from internal.core.tools.builtin_tools.entities import ProviderEntity, Provider
 
 @inject
 @singleton
-class ProviderFactory(BaseModel):
+class BuiltinProviderManager(BaseModel):
     """服务提供商工厂类"""
     provider_map: dict[str, Provider] = Field(default_factory=dict)
 
