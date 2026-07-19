@@ -29,7 +29,7 @@ class Router:
         # 2.将url与对应的控制器方法做绑定
         bp.add_url_rule("/ping", view_func=self.app_handler.ping)
         bp.add_url_rule("/apps/<uuid:app_id>/debug", methods=["POST"], view_func=self.app_handler.debug)
-        bp.add_url_rule("/app/create", methods=["POST"], view_func=self.app_handler.create_app)
+        bp.add_url_rule("/app", methods=["POST"], view_func=self.app_handler.create_app)
         bp.add_url_rule("/app/<uuid:id>", view_func=self.app_handler.get_app)
         bp.add_url_rule("/app/<uuid:id>", methods=["POST"], view_func=self.app_handler.update_app)
         bp.add_url_rule("/app/<uuid:id>/delete", methods=["POST"], view_func=self.app_handler.delete_app)
@@ -51,6 +51,10 @@ class Router:
 
         # 4.自定义API插件模块
         bp.add_url_rule(
+            "/api-tools",
+            view_func=self.api_tool_handler.get_api_tool_providers_with_page,
+        )
+        bp.add_url_rule(
             "/api-tools/validate-openapi-schema",
             methods=["POST"],
             view_func=self.api_tool_handler.validate_openapi_schema,
@@ -59,6 +63,24 @@ class Router:
             "/api-tools",
             methods=["POST"],
             view_func=self.api_tool_handler.create_api_tool_provider,
+        )
+        bp.add_url_rule(
+            "/api-tools/<uuid:provider_id>",
+            view_func=self.api_tool_handler.get_api_tool_provider,
+        )
+        bp.add_url_rule(
+            "/api-tools/<uuid:provider_id>",
+            methods=["POST"],
+            view_func=self.api_tool_handler.update_api_tool_provider,
+        )
+        bp.add_url_rule(
+            "/api-tools/<uuid:provider_id>/tools/<string:tool_name>",
+            view_func=self.api_tool_handler.get_api_tool,
+        )
+        bp.add_url_rule(
+            "/api-tools/<uuid:provider_id>/delete",
+            methods=["POST"],
+            view_func=self.api_tool_handler.delete_api_tool_provider,
         )
 
         # 4.在应用上去注册蓝图
