@@ -29,6 +29,21 @@ const router = createRouter({
           name: 'space-apps-detail',
           component: () => import('@/views/space/apps/DetailView.vue'),
         },
+        {
+          path: '/store/apps',
+          name: 'store-apps-list',
+          component: () => import('@/views/store/apps/ListView.vue'),
+        },
+        {
+          path: '/store/tools',
+          name: 'store-tools-list',
+          component: () => import('@/views/store/tools/ListView.vue'),
+        },
+        {
+          path: '/open',
+          name: 'open-index',
+          component: () => import('@/views/open/IndexView.vue'),
+        },
       ],
     },
     {
@@ -41,21 +56,6 @@ const router = createRouter({
           component: () => import('@/views/auth/LoginView.vue'),
         },
       ],
-    },
-    {
-      path: '/store/apps',
-      name: 'store-apps-list',
-      component: () => import('@/views/store/apps/ListView.vue'),
-    },
-    {
-      path: '/store/tools',
-      name: 'store-tools-list',
-      component: () => import('@/views/store/tools/ListView.vue'),
-    },
-    {
-      path: '/open',
-      name: 'open-index',
-      component: () => import('@/views/open/IndexView.vue'),
     },
   ],
 })
