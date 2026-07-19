@@ -5,10 +5,12 @@
 @Author  : borgesme@gmail.com
 @File    : __init__.py.py
 """
+from .api_tool_service import ApiToolService
 from .app_service import AppService
 from .builtin_tool_service import BuiltinToolService
 
 __all__ = [
+    "ApiToolService",
     "AppService",
     "BuiltinToolService",
 ]
