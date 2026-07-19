@@ -74,6 +74,7 @@ class ApiProviderManager(BaseModel):
 
             fields[field_name] = (
                 field_type if field_required else Optional[field_type],
+                # field_type | None if not field_required else field_type,
                 Field(description=field_description),
             )
 
