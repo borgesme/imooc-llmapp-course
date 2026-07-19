@@ -81,7 +81,7 @@ class TestApiToolHandler:
         assert api_tool_provider is not None
 
     def test_update_api_tool_provider(self, client, db):
-        provider_id = "b1ffd31f-5cbb-4b35-bc8f-4bafabd78817"
+        provider_id = "d0969337-bc1b-4987-9b33-3917b9d0a6a6"
         data = {
             "name": "test_update_api_tool_provider",
             "icon": "https://cdn.imooc.com/icon.png",
@@ -96,7 +96,7 @@ class TestApiToolHandler:
         assert api_tool_provider.name == data.get("name")
 
     def test_delete_api_tool_provider(self, client, db):
-        provider_id = "b1ffd31f-5cbb-4b35-bc8f-4bafabd78817"
+        provider_id = "d0969337-bc1b-4987-9b33-3917b9d0a6a6"
         resp = client.post(f"/api-tools/{provider_id}/delete")
         assert resp.status_code == 200
         assert resp.json.get("code") == HttpCode.SUCCESS
