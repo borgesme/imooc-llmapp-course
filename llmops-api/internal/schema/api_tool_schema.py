@@ -67,7 +67,7 @@ class UpdateApiToolProviderReq(FlaskForm):
     openapi_schema = StringField("openapi_schema", validators=[
         DataRequired(message="openapi_schema字符串不能为空")
     ])
-    headers = ListField("headers", load_default=[])
+    headers = ListField("headers", default=[])
 
     @classmethod
     def validate_headers(cls, form, field):
