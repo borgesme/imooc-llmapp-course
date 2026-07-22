@@ -5,6 +5,7 @@
 @Author  : borgesme@gmail.com
 @File    : http.py
 """
+import logging
 import os
 
 from flask import Flask
@@ -13,6 +14,7 @@ from flask_migrate import Migrate
 
 from config import Config
 from internal.exception import CustomException
+from internal.extension import logging_extension
 from internal.router import Router
 from pkg.response import json, Response, HttpCode
 from pkg.sqlalchemy import SQLAlchemy
@@ -42,6 +44,7 @@ class Http(Flask):
         # 4.初始化flask扩展
         db.init_app(self)
         migrate.init_app(self, db, directory="internal/migration")
+        logging_extension.init_app(self)
 
         # 5.解决前后端跨域问题
         CORS(self, resources={
@@ -49,8 +52,8 @@ class Http(Flask):
                 "origins": "*",
                 "supports_credentials": True,
                 # 以下配置可以不设置
-                "methods": ["GET", "POST"],
-                "allow_headers": ["Content-Type"],
+                # "methods": ["GET", "POST"],
+                # "allow_headers": ["Content-Type"],
             }
         })
 
@@ -58,14 +61,17 @@ class Http(Flask):
         router.register_router(self)
 
     def _register_error_handler(self, error: Exception):
-        # 1.异常信息是不是我们的自定义异常，如果是可以提取message和code等信息
+        # 1.日志记录异常信息
+        logging.error("An error occurred: %s", error, exc_info=True)
+
+        # 2.异常信息是不是我们的自定义异常，如果是可以提取message和code等信息
         if isinstance(error, CustomException):
             return json(Response(
                 code=error.code,
                 message=error.message,
                 data=error.data if error.data is not None else {},
             ))
-        # 2.如果不是我们的自定义异常，则有可能是程序、数据库抛出的异常，也可以提取信息，设置为FAIL状态码
+        # 3.如果不是我们的自定义异常，则有可能是程序、数据库抛出的异常，也可以提取信息，设置为FAIL状态码
         if self.debug or os.getenv("FLASK_ENV") == "development":
             raise error
         else:
