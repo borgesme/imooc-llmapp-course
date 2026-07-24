@@ -93,3 +93,12 @@ flask --app app.server.app db downgrade 版本号
 # llmops-api\study\1-Prompt组件及使用技巧\4.复用提示模板.py
 # 最新版本移除了 PipelinePromptTemplate
 ```
+
+## celery异步任务
+
+```bash
+pip install celery eventlet
+
+# 启动
+celery -A app.http.app.celery worker --loglevel INFO --pool eventlet --logfile storage/log/celery.log
+```

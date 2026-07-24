@@ -1,5 +1,6 @@
 aiofiles==25.1.0
 alembic==1.18.5
+celery==5.6.3
 cos_python_sdk_v5==1.9.44
 doctran==0.0.14
 Flask==3.1.3

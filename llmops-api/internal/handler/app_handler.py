@@ -29,6 +29,7 @@ from langchain_openai import ChatOpenAI
 
 from internal.schema.app_schema import CompletionReq
 from internal.service import AppService, ApiToolService
+from internal.task.demo_task import demo_task
 from pkg.response import success_json, validate_error_json, success_message
 
 
@@ -117,7 +118,8 @@ class AppHandler:
         return success_json({"content": content})
 
     def ping(self):
+        demo_task.delay(uuid.uuid4())
         return self.api_tool_service.api_tool_invoke()
-        return success_json()
+        # return success_json()
         # raise FailException("数据未找到")
         # return {"ping": "pong"}
